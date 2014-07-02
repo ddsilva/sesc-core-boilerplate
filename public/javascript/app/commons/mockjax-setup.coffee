@@ -46,11 +46,11 @@ define [
 
   # Configurações do mockjax
   $.mockjax (settings) ->
-    console.log settings:settings
-
+    # GET /api/montadora
     if settings.url is montadoraPattern
       response = montadoras
     else if settings.url is carroPattern
+      # POST /api/carro
       if settings.type is 'POST'
         carro           = settings.data
         montadoraId     = carro.montadora
@@ -60,20 +60,21 @@ define [
         carros.push carro
 
         response = carro
+      # GET /api/carro
       else
         response = carros
     else if settings.url.match carroIdPattern
       id    = parseInt settings.url.match(carroIdPattern)[1]
       carro = _.find carros, (c) -> c.id is id
 
+      # PUT /api/carros/:id
       if settings.type is 'PUT'
         _.extend carro, settings.data
+      # DELETE /api/carros/:id
       else if settings.type is 'POST' and settings.data._method is 'DELETE'
         carros = _.removeItem carros, carro
 
       response = carro
-
-    console.log response:response
 
     if response
       return responseText: response
