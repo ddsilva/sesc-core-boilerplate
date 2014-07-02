@@ -1,0 +1,21 @@
+{
+  "name": "APP Teste",
+  "version": "1.0.0",
+  "description": "Sistema de Planejamento do SESC",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/dclick/sesc-siplan"
+  },
+  "author": "Dclick Software",
+  "license": "BSD",
+  "devDependencies": {
+    "grunt": "~0.4.1",
+    "grunt-contrib-coffee": "~0.7.0",
+    "grunt-contrib-watch": "~0.5.1",
+    "grunt-contrib-less": "~0.7.0"
+  }
+}

@@ -1,0 +1,12 @@
+<section class="edit-create-form-container">
+  <form class="form-horizontal" validation novalidate>
+    {{ labelRequiredFields }}
+    {{ textInput name="modelo" id="modelo" label="Modelo" required="true" maxlength="255" }}
+    {{ errorSummary }}
+    <div class="form-actions">
+      <a class="btn" href="#!/carro">Cancelar</a>
+      <button type="submit" class="btn btn-primary">Salvar</button>
+    </div>
+  </form>
+
+</section>
