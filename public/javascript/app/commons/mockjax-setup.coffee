@@ -28,12 +28,12 @@ define [
     id        : 1
     montadora : montadoras[0]
     modelo    : 'Pálio Fire'
-    preco     : 12000
+    preco     : '12000,00'
   },{
     id        : 2
     montadora : montadoras[4]
     modelo    : 'Civic'
-    preco     : 45000
+    preco     : '45000,00'
   }]
 
   # Indíce de controle dos carros
@@ -54,7 +54,7 @@ define [
       if settings.type is 'POST'
         carro           = settings.data
         montadoraId     = carro.montadora
-        carro.montadora = _.find montadoras, (m) -> m.id is montadoraId
+        carro.montadora = _.find montadoras, (m) -> m.id + '' is montadoraId
         carro.id        = carIndex++
 
         carros.push carro
@@ -69,6 +69,8 @@ define [
 
       # PUT /api/carros/:id
       if settings.type is 'PUT'
+        montadoraId             = settings.data.montadora
+        settings.data.montadora = _.find montadoras, (m) -> m.id + '' is montadoraId
         _.extend carro, settings.data
       # DELETE /api/carros/:id
       else if settings.type is 'POST' and settings.data._method is 'DELETE'

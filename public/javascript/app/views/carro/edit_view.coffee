@@ -19,24 +19,36 @@ define [
     # =============================================================
 
     container  : '#module-container'
-    autoRender : yes
     template   : require 'text!templates/carro/form.html'
-    validationRules: {}
+    validationRules:
+      montadora :
+        required:true
+      modelo:
+        required:true
+        maxlength:10
+      preco:
+        required:true
 
     # Override Methods
     # =============================================================
     initialize: ->
-      @requestData().done => super
+      super
+      @requestData().done => @render()
 
     getTemplateData: ->
       _.extend super,
         montadoras: _.generateOptions @montadoraCollection
 
     fillForm: ->
-      @$('#modelo').val @model.get 'modelo'
+      @cacheDOMElements()
+      @DOMElements.$modelo    .val @model.get 'modelo'
+      @DOMElements.$montadora .val @model.get('montadora').id
+      @DOMElements.$preco     .val @model.get 'preco'
 
     fillModel: ->
-      @model.set 'modelo', @$('#modelo').val()
+      @model.set 'modelo'   , @DOMElements.$modelo    .val()
+      @model.set 'montadora', @DOMElements.$montadora .val()
+      @model.set 'preco'    , @DOMElements.$preco     .val()
 
     # Additional Methods
     # =============================================================
@@ -44,3 +56,12 @@ define [
     requestData: ->
       @montadoraCollection = new MontadoraCollection
       @montadoraCollection.fetch()
+
+    cacheDOMElements: ->
+      @DOMElements =
+        $modelo     : @$ '#modelo'
+        $montadora  : @$ '#montadora'
+        $preco      : @$ '#preco'
+
+
+

@@ -16,26 +16,57 @@
 
       CarroCreateView.prototype.container = '#module-container';
 
-      CarroCreateView.prototype.autoRender = true;
-
       CarroCreateView.prototype.template = require('text!templates/carro/form.html');
 
-      CarroCreateView.prototype.validationRules = {};
+      CarroCreateView.prototype.validationRules = {
+        montadora: {
+          required: true
+        },
+        modelo: {
+          required: true,
+          maxlength: 255
+        },
+        preco: {
+          required: true
+        }
+      };
 
       CarroCreateView.prototype.initialize = function() {
         var _this = this;
+        CarroCreateView.__super__.initialize.apply(this, arguments);
         return this.requestData().done(function() {
-          return CarroCreateView.__super__.initialize.apply(_this, arguments);
+          return _this.render();
         });
       };
 
+      CarroCreateView.prototype.afterRender = function() {
+        CarroCreateView.__super__.afterRender.apply(this, arguments);
+        return this.cacheDOMElements();
+      };
+
       CarroCreateView.prototype.fillModel = function() {
-        return this.model.set('modelo', this.$('#modelo').val());
+        this.model.set('modelo', this.DOMElements.$modelo.val());
+        this.model.set('montadora', this.DOMElements.$montadora.val());
+        return this.model.set('preco', this.DOMElements.$preco.val());
+      };
+
+      CarroCreateView.prototype.getTemplateData = function() {
+        return _.extend(CarroCreateView.__super__.getTemplateData.apply(this, arguments), {
+          montadoras: _.generateOptions(this.montadoraCollection)
+        });
       };
 
       CarroCreateView.prototype.requestData = function() {
         this.montadoraCollection = new MontadoraCollection;
         return this.montadoraCollection.fetch();
+      };
+
+      CarroCreateView.prototype.cacheDOMElements = function() {
+        return this.DOMElements = {
+          $modelo: this.$('#modelo'),
+          $montadora: this.$('#montadora'),
+          $preco: this.$('#preco')
+        };
       };
 
       return CarroCreateView;

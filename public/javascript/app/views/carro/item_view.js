@@ -13,7 +13,20 @@
         return _ref;
       }
 
-      CarroItemView.prototype.template = "<td><a href=\"#!/carro/{{id}}\">{{montadora.nome}}</a></td>\n<td>{{modelo}}</td>\n<td>\n  <div class=\"pull-left\">{{preco}}</div>\n  <div class=\"actions btn-group\">\n    <a href=\"#\" class=\"btn delete\" title=\"Excluir\">\n      <i class=\"icon-remove icon-white\"></i>\n    </a>\n  </div>\n</td>";
+      CarroItemView.prototype.events = {
+        'click [name="btn-info"]': 'clickBtnInfoHandler'
+      };
+
+      CarroItemView.prototype.template = "<td>{{montadora.nome}}</td>\n<td><a href=\"#!/carro/{{id}}\">{{modelo}}</a></td>\n<td>\n  <div class=\"pull-left\">{{preco}}</div>\n  <div class=\"actions btn-group\">\n    <a href=\"#\" class=\"btn btn-secondary\" name=\"btn-info\" title=\"Informações\">\n      <i class=\" icon-info-sign icon-white\"></i>\n    </a>\n    <a href=\"#\" class=\"btn delete\" title=\"Excluir\">\n      <i class=\"icon-remove icon-white\"></i>\n    </a>\n  </div>\n</td>";
+
+      CarroItemView.prototype.triggerInfo = function() {
+        return this.trigger('modelData:send', this.model.toJSON());
+      };
+
+      CarroItemView.prototype.clickBtnInfoHandler = function(event) {
+        event.preventDefault();
+        return this.triggerInfo();
+      };
 
       return CarroItemView;
 

@@ -27,12 +27,12 @@
         id: 1,
         montadora: montadoras[0],
         modelo: 'Pálio Fire',
-        preco: 12000
+        preco: '12000,00'
       }, {
         id: 2,
         montadora: montadoras[4],
         modelo: 'Civic',
-        preco: 45000
+        preco: '45000,00'
       }
     ];
     carIndex = 3;
@@ -41,9 +41,6 @@
     carroIdPattern = /^\/api\/carro\/([\d]+)$/;
     return $.mockjax(function(settings) {
       var carro, id, montadoraId, response;
-      console.log({
-        settings: settings
-      });
       if (settings.url === montadoraPattern) {
         response = montadoras;
       } else if (settings.url === carroPattern) {
@@ -51,7 +48,7 @@
           carro = settings.data;
           montadoraId = carro.montadora;
           carro.montadora = _.find(montadoras, function(m) {
-            return m.id === montadoraId;
+            return m.id + '' === montadoraId;
           });
           carro.id = carIndex++;
           carros.push(carro);
@@ -65,15 +62,16 @@
           return c.id === id;
         });
         if (settings.type === 'PUT') {
+          montadoraId = settings.data.montadora;
+          settings.data.montadora = _.find(montadoras, function(m) {
+            return m.id + '' === montadoraId;
+          });
           _.extend(carro, settings.data);
         } else if (settings.type === 'POST' && settings.data._method === 'DELETE') {
           carros = _.removeItem(carros, carro);
         }
         response = carro;
       }
-      console.log({
-        response: response
-      });
       if (response) {
         return {
           responseText: response

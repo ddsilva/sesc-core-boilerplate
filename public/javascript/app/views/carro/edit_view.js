@@ -16,16 +16,26 @@
 
       CarroEditView.prototype.container = '#module-container';
 
-      CarroEditView.prototype.autoRender = true;
-
       CarroEditView.prototype.template = require('text!templates/carro/form.html');
 
-      CarroEditView.prototype.validationRules = {};
+      CarroEditView.prototype.validationRules = {
+        montadora: {
+          required: true
+        },
+        modelo: {
+          required: true,
+          maxlength: 10
+        },
+        preco: {
+          required: true
+        }
+      };
 
       CarroEditView.prototype.initialize = function() {
         var _this = this;
+        CarroEditView.__super__.initialize.apply(this, arguments);
         return this.requestData().done(function() {
-          return CarroEditView.__super__.initialize.apply(_this, arguments);
+          return _this.render();
         });
       };
 
@@ -36,16 +46,29 @@
       };
 
       CarroEditView.prototype.fillForm = function() {
-        return this.$('#modelo').val(this.model.get('modelo'));
+        this.cacheDOMElements();
+        this.DOMElements.$modelo.val(this.model.get('modelo'));
+        this.DOMElements.$montadora.val(this.model.get('montadora').id);
+        return this.DOMElements.$preco.val(this.model.get('preco'));
       };
 
       CarroEditView.prototype.fillModel = function() {
-        return this.model.set('modelo', this.$('#modelo').val());
+        this.model.set('modelo', this.DOMElements.$modelo.val());
+        this.model.set('montadora', this.DOMElements.$montadora.val());
+        return this.model.set('preco', this.DOMElements.$preco.val());
       };
 
       CarroEditView.prototype.requestData = function() {
         this.montadoraCollection = new MontadoraCollection;
         return this.montadoraCollection.fetch();
+      };
+
+      CarroEditView.prototype.cacheDOMElements = function() {
+        return this.DOMElements = {
+          $modelo: this.$('#modelo'),
+          $montadora: this.$('#montadora'),
+          $preco: this.$('#preco')
+        };
       };
 
       return CarroEditView;

@@ -1,7 +1,9 @@
 <section class="edit-create-form-container">
   <form class="form-horizontal" validation novalidate>
     {{ labelRequiredFields }}
-    {{ textInput name="modelo" id="modelo" label="Modelo" required="true" maxlength="255" }}
+    {{ selectInput montadoras name="montadora" id="montadora" label="Montadora" required="true" empty="Selecione" }}
+    {{ textInput              name="modelo"    id="modelo"    label="Modelo"    required="true" maxlength="255" }}
+    {{ textInput              name="preco"     id="preco"     label="Preço"     required="true" mask="decimal" className="input-min"}}
     {{ errorSummary }}
     <div class="form-actions">
       <a class="btn" href="#!/carro">Cancelar</a>
